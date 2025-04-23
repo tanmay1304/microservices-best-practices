@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --name=mongodb
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Build Product Service
+      run: |
+        cd product-service
+        mvn clean test
+    
+    - name: Upload Product Service Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: product-service-test-results
+        path: product-service/target/surefire-reports
+    
+    - name: Upload Product Service JaCoCo Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: product-service-jacoco-report
+        path: product-service/target/site/jacoco
+    
+    - name: Build Order Service
+      run: |
+        cd order-service
+        mvn clean test
+    
+    - name: Upload Order Service Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: order-service-test-results
+        path: order-service/target/surefire-reports
+    
+    - name: Upload Order Service JaCoCo Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: order-service-jacoco-report
+        path: order-service/target/site/jacoco
