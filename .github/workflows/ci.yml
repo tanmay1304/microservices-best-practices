@@ -34,14 +34,14 @@ jobs:
         mvn clean test
     
     - name: Upload Product Service Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       if: always()
       with:
         name: product-service-test-results
         path: product-service/target/surefire-reports
     
     - name: Upload Product Service JaCoCo Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: product-service-jacoco-report
         path: product-service/target/site/jacoco
@@ -52,14 +52,14 @@ jobs:
         mvn clean test
     
     - name: Upload Order Service Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       if: always()
       with:
         name: order-service-test-results
         path: order-service/target/surefire-reports
     
     - name: Upload Order Service JaCoCo Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: order-service-jacoco-report
         path: order-service/target/site/jacoco
